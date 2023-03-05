@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserRepository userRepository;
+    private final UserRepository userRepository; //dependency injection
     private final BCryptPasswordEncoder passwordEncoder;
 
     public ApiUser readUserByUsername (String username){
