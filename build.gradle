@@ -17,7 +17,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.projectlombok:lombok:1.18.24'
-    runtimeOnly 'com.mysql:mysql-connector-j'
+	implementation 'com.auth0:auth0:2.0.0'
+	implementation 'com.auth0:java-jwt:4.3.0'
+	runtimeOnly 'com.mysql:mysql-connector-j'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 }
