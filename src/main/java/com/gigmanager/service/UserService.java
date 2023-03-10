@@ -3,7 +3,7 @@ package com.gigmanager.service;
 import com.gigmanager.models.ApiUser;
 import com.gigmanager.models.request.UserCreateRequest;
 import com.gigmanager.repositories.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
+import javax.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
