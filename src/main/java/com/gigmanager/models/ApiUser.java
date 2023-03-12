@@ -1,5 +1,5 @@
 package com.gigmanager.models;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,10 +16,6 @@ public class ApiUser {
     private Long id;
     private String username;
     private String password;
-
-
-
-
 }
 
 
