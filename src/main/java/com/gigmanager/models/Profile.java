@@ -10,14 +10,14 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "profile")
+@Table(name = "profile") //table profile will have column "user_id", that will target id column in the user table
 public class Profile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long profileId;
+    private Long id;
 
     @OneToOne()
-    @JoinColumn()
+    @JoinColumn(name = "user_id", referencedColumnName="id")
     private ApiUser apiUser;
 
     private String firstName;
