@@ -1,5 +1,6 @@
 package com.gigmanager.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,7 @@ public class Profile {
 
     @OneToOne()
     @JoinColumn(name = "user_id", referencedColumnName="id")
+    @JsonIgnoreProperties("password")
     private ApiUser apiUser;
 
     private String firstName;
