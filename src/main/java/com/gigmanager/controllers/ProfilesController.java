@@ -4,8 +4,10 @@ import com.gigmanager.models.Profile;
 import com.gigmanager.models.request.ProfileUpdateRequest;
 import com.gigmanager.service.ProfileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 
 @CrossOrigin
@@ -21,16 +23,16 @@ public class ProfilesController {
     public ResponseEntity<?> getProfile(HttpServletRequest request) {
         String username = request.getUserPrincipal().getName(); // gets username from JWT token attached to the request
         Profile profile = profileService.readProfileByUsername(username);
-        return ResponseEntity.ok().body(profile);
+        return new ResponseEntity<>(profile, HttpStatus.OK);
     }
 
 
     //2. Post (update)
     @PostMapping("/")
-    public ResponseEntity<?> updateProfile(@RequestBody ProfileUpdateRequest profileUpdateRequest, HttpServletRequest request){
+    public ResponseEntity<?> updateProfile(@RequestBody ProfileUpdateRequest profileUpdateRequest, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
         profileService.updateUser(profileUpdateRequest, username);
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 }

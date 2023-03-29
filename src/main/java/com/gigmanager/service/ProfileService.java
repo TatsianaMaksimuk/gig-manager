@@ -15,11 +15,11 @@ public class ProfileService {
 
     private final ProfileRepository profileRepository;
 
-    public Profile readProfileByUsername(String username){
+    public Profile readProfileByUsername(String username) {
         return profileRepository.findByApiUser_username(username).orElseThrow(EntityNotFoundException::new);
     }
 
-    public void updateUser(ProfileUpdateRequest profileUpdateRequest, String username){
+    public void updateUser(ProfileUpdateRequest profileUpdateRequest, String username) {
         Profile updatedProfile = profileRepository.findByApiUser_username(username).orElseThrow(EntityNotFoundException::new);
         updatedProfile.setFirstName(profileUpdateRequest.getFirstName());
         updatedProfile.setLastName(profileUpdateRequest.getLastName());
@@ -28,7 +28,6 @@ public class ProfileService {
         updatedProfile.setAddress(profileUpdateRequest.getAddress());
         profileRepository.save(updatedProfile);
     }
-
 
 
 }

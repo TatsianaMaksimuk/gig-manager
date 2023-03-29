@@ -3,6 +3,7 @@ package com.gigmanager.controllers;
 import com.gigmanager.models.request.UserCreateRequest;
 import com.gigmanager.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class UsersController {
     @PostMapping
     public ResponseEntity<?> createUser (@RequestBody UserCreateRequest userCreateRequest){
         userService.createUser(userCreateRequest);
-        return ResponseEntity.ok().build(); //
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
