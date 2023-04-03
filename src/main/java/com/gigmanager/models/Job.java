@@ -19,7 +19,9 @@ public class Job {
 
     private String name;
     private String description;
-    private boolean isFinished;
+
+    @Enumerated(EnumType.STRING)
+    private JobStatus status;
     private boolean isPayed;
 
     @ManyToOne
