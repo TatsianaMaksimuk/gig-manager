@@ -22,7 +22,9 @@ public class Job {
 
     @Enumerated(EnumType.STRING)
     private JobStatus status;
+    private boolean isFinished;
     private boolean isPayed;
+
 
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
