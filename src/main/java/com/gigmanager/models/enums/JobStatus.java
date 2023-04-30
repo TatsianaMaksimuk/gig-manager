@@ -1,4 +1,4 @@
-package com.gigmanager.models;
+package com.gigmanager.models.enums;
 
 public enum JobStatus {
     TO_DO,

@@ -1,6 +1,6 @@
 package com.gigmanager.models.request;
 
-import com.gigmanager.models.JobStatus;
+import com.gigmanager.models.enums.JobStatus;
 import lombok.Data;
 
 @Data

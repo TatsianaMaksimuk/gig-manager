@@ -1,9 +1,8 @@
 package com.gigmanager.controllers;
 
-import com.gigmanager.models.ApiUser;
 import com.gigmanager.models.Customer;
 import com.gigmanager.models.Job;
-import com.gigmanager.models.JobStatus;
+import com.gigmanager.models.enums.JobStatus;
 import com.gigmanager.models.request.JobUpsertRequest;
 import com.gigmanager.repositories.CustomerRepository;
 import com.gigmanager.repositories.JobRepository;
@@ -27,7 +26,7 @@ public class JobsController {
     @GetMapping("jobs/")
     public ResponseEntity<?> getAllJobs(HttpServletRequest request){
       String username = request.getUserPrincipal().getName();
-        List<Job> jobs = jobRepository.findAllByCustomer_ApiUser_username(username);
+        List<Job> jobs = jobRepository.findAllByCustomer_ApiUser_username(username); //username validation, checking user through customer
         return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
 

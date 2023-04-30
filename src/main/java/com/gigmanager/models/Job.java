@@ -1,6 +1,7 @@
 package com.gigmanager.models;
 
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import com.gigmanager.models.enums.JobStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
