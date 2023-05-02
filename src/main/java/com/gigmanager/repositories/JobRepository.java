@@ -11,6 +11,5 @@ public interface JobRepository extends JpaRepository<Job, Long> {
     List<Job> findAllByCustomer_ApiUser_username(String username);
     //query all jobs by customer id
     List<Job> findAllByCustomer_ApiUser_usernameAndCustomer_id(String username,Long id);
-
-    List<Job> findAllByStatus(JobStatus status);
+    List<Job> findAllByCustomer_ApiUser_usernameAndStatus(String username, JobStatus status);
 }

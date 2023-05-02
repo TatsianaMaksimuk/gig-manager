@@ -30,14 +30,6 @@ public class JobsController {
         return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
 
-    //GetJobsByCustomerId
-    @GetMapping("customers/{id}/jobs")
-    public ResponseEntity<?> getAllJobsByCustomer (@PathVariable Long id,  HttpServletRequest request){
-        String username = request.getUserPrincipal().getName();
-        List<Job> jobs = jobRepository.findAllByCustomer_ApiUser_usernameAndCustomer_id(username, id);
-        return new ResponseEntity<>(jobs, HttpStatus.OK);
-    }
-
     //GetJobById
     @GetMapping("jobs/{id}")
     public ResponseEntity<?> getJobById(@PathVariable Long id, HttpServletRequest request){
@@ -49,6 +41,23 @@ public class JobsController {
         return new ResponseEntity<>(requestedJob, HttpStatus.OK);
     }
 
+
+    //GetJobsByCustomerId
+    @GetMapping("customers/{id}/jobs")
+    public ResponseEntity<?> getAllJobsByCustomer (@PathVariable Long id,  HttpServletRequest request){
+        String username = request.getUserPrincipal().getName();
+        List<Job> jobs = jobRepository.findAllByCustomer_ApiUser_usernameAndCustomer_id(username, id);
+        return new ResponseEntity<>(jobs, HttpStatus.OK);
+    }
+
+
+    //GetJobsByStatus
+    @GetMapping("jobs/filter")
+    public ResponseEntity<?> getJobsByStatus(@RequestParam JobStatus status, HttpServletRequest request){
+        String username = request.getUserPrincipal().getName();
+        List<Job> jobs = jobRepository.findAllByCustomer_ApiUser_usernameAndStatus(username, status);
+        return new ResponseEntity<>(jobs, HttpStatus.OK);
+    }
 
     //CreateJob
     @PostMapping("customers/{id}/")
