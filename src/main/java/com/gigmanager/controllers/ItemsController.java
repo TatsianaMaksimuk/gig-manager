@@ -5,10 +5,7 @@ import com.gigmanager.repositories.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -29,6 +26,15 @@ public class ItemsController {
     }
 
     //get item by id
+    @GetMapping("items/{id}")
+    public  ResponseEntity<?> getItemById(@PathVariable Long id, HttpServletRequest request){
+        String username = request.getUserPrincipal().getName();
+        Item requestedItem = itemRepository.findById(id).orElse(null);
+        if (requestedItem==null||!requestedItem.getJob().getCustomer().getApiUser().getUsername().equals(username)){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(requestedItem,HttpStatus.OK);
+    }
 
     //get all items by job id
 
