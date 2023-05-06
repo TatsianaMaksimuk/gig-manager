@@ -1,6 +1,7 @@
 package com.gigmanager.controllers;
 
 import com.gigmanager.models.Item;
+import com.gigmanager.models.enums.ItemStatus;
 import com.gigmanager.repositories.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,9 +38,22 @@ public class ItemsController {
     }
 
     //get all items by job id
+ @GetMapping("jobs/{id}/items")
+    public ResponseEntity<?> getAllItemsByJobId(@PathVariable long id, HttpServletRequest request){
+     String username = request.getUserPrincipal().getName();
+     List<Item> items = itemRepository.findAllByJob_Customer_ApiUser_usernameAndJob_id(username,id);
+     return new ResponseEntity<>(items, HttpStatus.OK);
+ }
+
 
     //get items by status and job id
 
+@GetMapping("jobs/{id}/items/filter")
+    public ResponseEntity<?> getItemsByJobAndStatusFilter(@PathVariable long id, @RequestParam ItemStatus status, HttpServletRequest request){
+    String username = request.getUserPrincipal().getName();
+    List<Item> items = itemRepository.findAllByJob_Customer_ApiUser_usernameAndJob_idAndStatus(username, id, status);
+    return new ResponseEntity<>(items, HttpStatus.OK);
+}
     //create
 
     //update
