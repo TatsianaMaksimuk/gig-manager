@@ -22,20 +22,21 @@ public class JobsController {
 
     private final JobRepository jobRepository;
     private final CustomerRepository customerRepository;
+
     //GetAllJobs
     @GetMapping("jobs/")
-    public ResponseEntity<?> getAllJobs(HttpServletRequest request){
-      String username = request.getUserPrincipal().getName();
+    public ResponseEntity<?> getAllJobs(HttpServletRequest request) {
+        String username = request.getUserPrincipal().getName();
         List<Job> jobs = jobRepository.findAllByCustomer_ApiUser_username(username); //username validation, checking user through customer
         return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
 
     //GetJobById
     @GetMapping("jobs/{id}")
-    public ResponseEntity<?> getJobById(@PathVariable Long id, HttpServletRequest request){
+    public ResponseEntity<?> getJobById(@PathVariable Long id, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
-        Job requestedJob =  jobRepository.findById(id).orElse(null);
-        if (requestedJob==null|| !requestedJob.getCustomer().getApiUser().getUsername().equals(username)){
+        Job requestedJob = jobRepository.findById(id).orElse(null);
+        if (requestedJob == null || !requestedJob.getCustomer().getApiUser().getUsername().equals(username)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(requestedJob, HttpStatus.OK);
@@ -44,7 +45,7 @@ public class JobsController {
 
     //GetJobsByCustomerId
     @GetMapping("customers/{id}/jobs")
-    public ResponseEntity<?> getAllJobsByCustomer (@PathVariable Long id,  HttpServletRequest request){
+    public ResponseEntity<?> getAllJobsByCustomer(@PathVariable Long id, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
         List<Job> jobs = jobRepository.findAllByCustomer_ApiUser_usernameAndCustomer_id(username, id);
         return new ResponseEntity<>(jobs, HttpStatus.OK);
@@ -53,7 +54,7 @@ public class JobsController {
 
     //GetJobsByStatus
     @GetMapping("jobs/filter")
-    public ResponseEntity<?> getJobsByStatus(@RequestParam JobStatus status, HttpServletRequest request){
+    public ResponseEntity<?> getJobsByStatus(@RequestParam JobStatus status, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
         List<Job> jobs = jobRepository.findAllByCustomer_ApiUser_usernameAndStatus(username, status);
         return new ResponseEntity<>(jobs, HttpStatus.OK);
@@ -61,10 +62,10 @@ public class JobsController {
 
     //CreateJob
     @PostMapping("customers/{id}/")
-    public ResponseEntity<?> createJob (@RequestBody JobUpsertRequest jobUpsertRequest, Long id, HttpServletRequest request){
+    public ResponseEntity<?> createJob(@RequestBody JobUpsertRequest jobUpsertRequest, Long id, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
         Customer jobCustomer = customerRepository.getById(id);
-        if (!jobCustomer.getApiUser().getUsername().equals(username)){
+        if (!jobCustomer.getApiUser().getUsername().equals(username)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Job newJob = new Job();
@@ -81,11 +82,11 @@ public class JobsController {
 
     //UpdateJob - don't set customer
     @PostMapping("customers/{customerId}/jobs/{jobId}")
-    public ResponseEntity<?> updateJob (@RequestBody JobUpsertRequest jobUpsertRequest, Long customerId, Long jobId, HttpServletRequest request){
+    public ResponseEntity<?> updateJob(@RequestBody JobUpsertRequest jobUpsertRequest, Long customerId, Long jobId, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
-        Job job = jobRepository.getById(customerId);
+        Job job = jobRepository.getById(jobId);
         if (!job.getCustomer().getId().equals(customerId)
-         || !job.getCustomer().getApiUser().getUsername().equals(username)){
+                || !job.getCustomer().getApiUser().getUsername().equals(username)) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); // validation
         }
         job.setName(jobUpsertRequest.getName());
@@ -101,13 +102,12 @@ public class JobsController {
     //DeleteJob
 
     @DeleteMapping("jobs/{id}")
-    public ResponseEntity<?> deleteJob (@PathVariable Long id, HttpServletRequest request) {
+    public ResponseEntity<?> deleteJob(@PathVariable Long id, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
         Job requestedJob = jobRepository.findById(id).orElse(null);
-        if (requestedJob == null || !requestedJob.getCustomer().getApiUser().getUsername().equals(username)) {
-            return null;
+        if (requestedJob != null && requestedJob.getCustomer().getApiUser().getUsername().equals(username)) {
+            jobRepository.deleteById(id);
         }
-        jobRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
