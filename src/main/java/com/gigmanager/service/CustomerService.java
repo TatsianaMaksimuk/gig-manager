@@ -48,7 +48,7 @@ public class CustomerService {
         return customer;
     }
 
-    public Customer deleteCustomer(Long id, String username){
+    public Customer deleteCustomer(Long id, String username) {
         Customer customer = findCustomerById(id, username);
         customerRepository.deleteById(id);
         return customer;

@@ -6,6 +6,7 @@ import com.gigmanager.models.enums.JobStatus;
 import com.gigmanager.models.request.JobUpsertRequest;
 import com.gigmanager.repositories.CustomerRepository;
 import com.gigmanager.repositories.JobRepository;
+import com.gigmanager.service.JobService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JobsController {
 
+    private final JobService jobService;
     private final JobRepository jobRepository;
     private final CustomerRepository customerRepository;
 
@@ -27,7 +29,7 @@ public class JobsController {
     @GetMapping("jobs/")
     public ResponseEntity<?> getAllJobs(HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
-        List<Job> jobs = jobRepository.findAllByCustomer_ApiUser_username(username); //username validation, checking user through customer
+        List<Job> jobs = jobService.readAllJobs(username); //username validation, checking user through customer
         return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
 
@@ -35,8 +37,8 @@ public class JobsController {
     @GetMapping("jobs/{id}")
     public ResponseEntity<?> getJobById(@PathVariable Long id, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
-        Job requestedJob = jobRepository.findById(id).orElse(null);
-        if (requestedJob == null || !requestedJob.getCustomer().getApiUser().getUsername().equals(username)) {
+        Job requestedJob = jobService.findJobById(id, username);
+        if (requestedJob == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(requestedJob, HttpStatus.OK);
@@ -47,7 +49,7 @@ public class JobsController {
     @GetMapping("customers/{id}/jobs")
     public ResponseEntity<?> getAllJobsByCustomer(@PathVariable Long id, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
-        List<Job> jobs = jobRepository.findAllByCustomer_ApiUser_usernameAndCustomer_id(username, id);
+        List<Job> jobs = jobService.findJobsByCustomerId(id, username);
         return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
 
