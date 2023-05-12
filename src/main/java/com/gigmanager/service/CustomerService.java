@@ -40,18 +40,18 @@ public class CustomerService {
     }
 
 
-    public Customer updateCustomer(Long id, String username, CustomerUpsertRequest request) {
+    public Customer updateCustomer(CustomerUpsertRequest customerUpsertRequest, Long id, String username) {
         Customer customer = findCustomerById(id, username);
-        customer.setName(request.getName());
-        customer.setEmail(request.getEmail());
+        customer.setName(customerUpsertRequest.getName());
+        customer.setEmail(customerUpsertRequest.getEmail());
         customerRepository.save(customer);
         return customer;
     }
 
-    public Customer deleteCustomer(Long id, String username) {
+    public void deleteCustomer(Long id, String username) {
         Customer customer = findCustomerById(id, username);
-        customerRepository.deleteById(id);
-        return customer;
+        if (customer != null) {
+            customerRepository.deleteById(id);
+        }
     }
-
 }

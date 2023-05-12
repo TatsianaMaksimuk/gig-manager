@@ -49,9 +49,9 @@ public class CustomersController {
 
     //update customer
     @PostMapping("/{id}")
-    public ResponseEntity<?> updateCustomer(@PathVariable Long id, @RequestBody CustomerUpsertRequest customerUpsertRequest, HttpServletRequest request) {
+    public ResponseEntity<?> updateCustomer(@RequestBody CustomerUpsertRequest customerUpsertRequest, @PathVariable Long id,  HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
-        Customer requestedCustomer = customerService.updateCustomer(id, username, customerUpsertRequest);
+        Customer requestedCustomer = customerService.updateCustomer(customerUpsertRequest, id, username);
         if (requestedCustomer == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
