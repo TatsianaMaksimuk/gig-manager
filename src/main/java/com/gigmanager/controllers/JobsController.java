@@ -1,6 +1,6 @@
 package com.gigmanager.controllers;
 
-import com.gigmanager.models.Customer;
+
 import com.gigmanager.models.Job;
 import com.gigmanager.models.enums.JobStatus;
 import com.gigmanager.models.request.JobUpsertRequest;
@@ -22,8 +22,6 @@ import java.util.List;
 public class JobsController {
 
     private final JobService jobService;
-    private final JobRepository jobRepository;
-    private final CustomerRepository customerRepository;
 
     //GetAllJobs
     @GetMapping("jobs/")

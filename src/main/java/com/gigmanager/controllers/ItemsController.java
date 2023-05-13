@@ -7,6 +7,8 @@ import com.gigmanager.models.request.ItemUpsertRequest;
 import com.gigmanager.models.request.JobUpsertRequest;
 import com.gigmanager.repositories.ItemRepository;
 import com.gigmanager.repositories.JobRepository;
+import com.gigmanager.service.CustomerService;
+import com.gigmanager.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import java.util.List;
 @RequestMapping("api/")
 @RequiredArgsConstructor
 public class ItemsController {
+    private final ItemService itemService;
     private final ItemRepository itemRepository;
     private final JobRepository jobRepository;
 
@@ -27,7 +30,7 @@ public class ItemsController {
     @GetMapping("/items")
     public ResponseEntity<?> getAllItems(HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
-        List<Item> items = itemRepository.findAllByJob_Customer_ApiUser_username(username);
+        List<Item> items = itemService.readAllItems(username);
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
