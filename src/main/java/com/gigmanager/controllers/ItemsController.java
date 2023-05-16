@@ -38,12 +38,11 @@ public class ItemsController {
     @GetMapping("items/{id}")
     public ResponseEntity<?> getItemById(@PathVariable Long id, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
-        Item requestedItem = itemRepository.findById(id).orElse(null);
-        if (requestedItem == null || !requestedItem.getJob().getCustomer().getApiUser().getUsername().equals(username)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        Item requestedItem = itemService.findItemById(id, username);
         return new ResponseEntity<>(requestedItem, HttpStatus.OK);
     }
+
+    //Start here:
 
     //get all items by job id
     @GetMapping("jobs/{id}/items")
