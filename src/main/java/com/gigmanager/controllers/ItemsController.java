@@ -42,27 +42,26 @@ public class ItemsController {
         return new ResponseEntity<>(requestedItem, HttpStatus.OK);
     }
 
-    //Start here:
 
     //get all items by job id
     @GetMapping("jobs/{id}/items")
-    public ResponseEntity<?> getAllItemsByJobId(@PathVariable long id, HttpServletRequest request) {
+    public ResponseEntity<?> getAllItemsByJobId(@PathVariable Long id, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
-        List<Item> items = itemRepository.findAllByJob_Customer_ApiUser_usernameAndJob_id(username, id);
+        List<Item> items = itemService.findAllItemsByJobId(id, username);
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
-
 
     //get items by status and job id
 
     @GetMapping("jobs/{id}/items/filter")
-    public ResponseEntity<?> getItemsByJobAndStatusFilter(@PathVariable long id, @RequestParam ItemStatus status, HttpServletRequest request) {
+    public ResponseEntity<?> getItemsByJobAndStatusFilter(@PathVariable Long id, @RequestParam ItemStatus status, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
-        List<Item> items = itemRepository.findAllByJob_Customer_ApiUser_usernameAndJob_idAndStatus(username, id, status);
+        List<Item> items = itemService.findItemsByJobIdAndStatus(id, status, username);
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
 
+    //Start here:
     //create
     @PostMapping("jobs/{id}")
     public ResponseEntity<?> createItem(@RequestBody ItemUpsertRequest itemUpsertRequest, Long id, HttpServletRequest request) {
