@@ -1,13 +1,9 @@
 package com.gigmanager.controllers;
 
 import com.gigmanager.models.Item;
-import com.gigmanager.models.Job;
 import com.gigmanager.models.enums.ItemStatus;
 import com.gigmanager.models.request.ItemUpsertRequest;
-import com.gigmanager.models.request.JobUpsertRequest;
 import com.gigmanager.repositories.ItemRepository;
-import com.gigmanager.repositories.JobRepository;
-import com.gigmanager.service.CustomerService;
 import com.gigmanager.service.ItemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,7 +20,6 @@ import java.util.List;
 public class ItemsController {
     private final ItemService itemService;
     private final ItemRepository itemRepository;
-    private final JobRepository jobRepository;
 
     //get all items
     @GetMapping("/items")
@@ -61,49 +56,32 @@ public class ItemsController {
     }
 
 
-    //Start here:
     //create
     @PostMapping("jobs/{id}")
     public ResponseEntity<?> createItem(@RequestBody ItemUpsertRequest itemUpsertRequest, Long id, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
-        Job itemJob = jobRepository.getById(id);
-        if (!itemJob.getCustomer().getApiUser().getUsername().equals(username)) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        Item newItem = new Item();
-        newItem.setJob(itemJob);
-        newItem.setName(itemUpsertRequest.getName());
-        newItem.setDescription(itemUpsertRequest.getDescription());
-        newItem.setStatus(ItemStatus.TO_DO);
-        newItem.setStage(itemUpsertRequest.getStage());
+        Item newItem = itemService.createNewItem(itemUpsertRequest, id, username);
         return new ResponseEntity<>(newItem, HttpStatus.CREATED);
     }
 
+
+
     //update
     @PostMapping("jobs/{jobId}/items/{itemId}")
-    public ResponseEntity<?> updateItem(@RequestBody ItemUpsertRequest itemUpsertRequest, Long jobId, long itemId, HttpServletRequest request) {
+    public ResponseEntity<?> updateItem(@RequestBody ItemUpsertRequest itemUpsertRequest, Long jobId, Long itemId, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
-        Item item = itemRepository.getById(itemId);
-        if (!item.getJob().getId().equals(jobId)
-                || !item.getJob().getCustomer().getApiUser().getUsername().equals(username)) {
+        Item updatedItem =  itemService.updateItem(itemUpsertRequest, jobId, itemId, username);
+        if (updatedItem == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        item.setName(itemUpsertRequest.getName());
-        item.setDescription(itemUpsertRequest.getDescription());
-        item.setStatus(itemUpsertRequest.getStatus());
-        item.setStage(itemUpsertRequest.getStage());
-        item.setFinished(itemUpsertRequest.isFinished());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(updatedItem, HttpStatus.OK);
     }
 
     //delete
-    @DeleteMapping("item/{id}")
+    @DeleteMapping("items/{id}")
     public ResponseEntity<?> deleteItem(@PathVariable Long id, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
-        Item requestedItem = itemRepository.findById(id).orElse(null);
-        if (requestedItem != null && requestedItem.getJob().getCustomer().getApiUser().getUsername().equals(username)) {
-            itemRepository.deleteById(id);
-        }
+        itemService.deleteItem(id, username);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
