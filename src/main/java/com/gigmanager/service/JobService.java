@@ -7,8 +7,6 @@ import com.gigmanager.models.request.JobUpsertRequest;
 import com.gigmanager.repositories.CustomerRepository;
 import com.gigmanager.repositories.JobRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -69,9 +67,8 @@ public class JobService {
         return job;
     }
 
-    public void deleteJob(Long id, String username){
+    public void deleteJob(Long id, String username) {
         Job job = findJobById(id, username);
-
         if (job != null) {
             jobRepository.deleteById(id);
         }

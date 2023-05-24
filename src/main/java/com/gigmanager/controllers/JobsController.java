@@ -4,8 +4,6 @@ package com.gigmanager.controllers;
 import com.gigmanager.models.Job;
 import com.gigmanager.models.enums.JobStatus;
 import com.gigmanager.models.request.JobUpsertRequest;
-import com.gigmanager.repositories.CustomerRepository;
-import com.gigmanager.repositories.JobRepository;
 import com.gigmanager.service.JobService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -73,11 +71,11 @@ public class JobsController {
     @PostMapping("customers/{customerId}/jobs/{jobId}")
     public ResponseEntity<?> updateJob(@RequestBody JobUpsertRequest jobUpsertRequest, Long customerId, Long jobId, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
-        Job requestedJob = jobService.updateJob(jobUpsertRequest, customerId, jobId, username);
-        if (requestedJob == null){
+        Job updatedJob = jobService.updateJob(jobUpsertRequest, customerId, jobId, username);
+        if (updatedJob == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(requestedJob, HttpStatus.OK);
+        return new ResponseEntity<>(updatedJob, HttpStatus.OK);
     }
 
     //DeleteJob
