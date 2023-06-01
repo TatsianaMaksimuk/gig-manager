@@ -5,7 +5,9 @@ import com.gigmanager.models.Profile;
 import com.gigmanager.models.request.UserCreateRequest;
 import com.gigmanager.repositories.ProfileRepository;
 import com.gigmanager.repositories.UserRepository;
+
 import javax.persistence.EntityNotFoundException;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,17 +23,17 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     //searches user by username
-    public ApiUser readUserByUsername (String username){
+    public ApiUser readUserByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
     }
 
 
     //1) Validation, does not allow to create user with existing username:
     //2) Creates a profile for user.
-    public void createUser (UserCreateRequest userCreateRequest){
+    public void createUser(UserCreateRequest userCreateRequest) {
         Optional<ApiUser> byUsername = userRepository.findByUsername(userCreateRequest.getUsername()); //optional is from jpa, is an object wrapper.
         // It provides a clear and explicit way to convey the message that there may not be a value, without using null.
-        if (byUsername.isPresent()){ //true if found
+        if (byUsername.isPresent()) { //true if found
             throw new RuntimeException("User with this username is already registered. Please use different username");
         }
         ApiUser newUser = new ApiUser();

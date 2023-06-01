@@ -7,6 +7,7 @@ import com.gigmanager.models.request.ItemUpsertRequest;
 import com.gigmanager.repositories.ItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -16,11 +17,11 @@ public class ItemService {
 
     private final JobService jobService;
 
-    public List<Item> readAllItems(String username){
+    public List<Item> readAllItems(String username) {
         return itemRepository.findAllByJob_Customer_ApiUser_username(username);
     }
 
-    public Item findItemById(Long id, String username){
+    public Item findItemById(Long id, String username) {
         Item item = itemRepository.findById(id).orElse(null);
         if (item == null || !item.getJob().getCustomer().getApiUser().getUsername().equals(username)) {
             return null;
@@ -28,15 +29,15 @@ public class ItemService {
         return item;
     }
 
-    public List<Item>findAllItemsByJobId(Long jobId, String username){
+    public List<Item> findAllItemsByJobId(Long jobId, String username) {
         return itemRepository.findAllByJob_Customer_ApiUser_usernameAndJob_id(jobId, username);
     }
 
-    public List<Item> findItemsByJobIdAndStatus(Long jobId, ItemStatus status, String username){
+    public List<Item> findItemsByJobIdAndStatus(Long jobId, ItemStatus status, String username) {
         return itemRepository.findAllByJob_Customer_ApiUser_usernameAndJob_idAndStatus(jobId, status, username);
     }
 
-    public Item createNewItem(ItemUpsertRequest itemUpsertRequest, Long id, String username){
+    public Item createNewItem(ItemUpsertRequest itemUpsertRequest, Long id, String username) {
         Job job = jobService.findJobById(id, username);
         Item newItem = new Item();
         newItem.setJob(job);
@@ -47,9 +48,9 @@ public class ItemService {
         return newItem;
     }
 
-    public Item updateItem(ItemUpsertRequest itemUpsertRequest, Long jobId, Long itemId, String username){
+    public Item updateItem(ItemUpsertRequest itemUpsertRequest, Long jobId, Long itemId, String username) {
         Item item = findItemById(itemId, username);
-        if (!item.getJob().getId().equals(jobId)){
+        if (!item.getJob().getId().equals(jobId)) {
             return null;
         }
         item.setName(itemUpsertRequest.getName());
@@ -61,9 +62,9 @@ public class ItemService {
         return item;
     }
 
-    public void deleteItem(Long id, String username){
+    public void deleteItem(Long id, String username) {
         Item item = findItemById(id, username);
-        if (item != null){
+        if (item != null) {
             itemRepository.deleteById(id);
         }
     }

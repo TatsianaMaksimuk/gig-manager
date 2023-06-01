@@ -72,7 +72,7 @@ public class JobsController {
     public ResponseEntity<?> updateJob(@RequestBody JobUpsertRequest jobUpsertRequest, Long customerId, Long jobId, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
         Job updatedJob = jobService.updateJob(jobUpsertRequest, customerId, jobId, username);
-        if (updatedJob == null){
+        if (updatedJob == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(updatedJob, HttpStatus.OK);
@@ -83,7 +83,7 @@ public class JobsController {
     @DeleteMapping("jobs/{id}")
     public ResponseEntity<?> deleteJob(@PathVariable Long id, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
-        jobService.deleteJob(id,username);
+        jobService.deleteJob(id, username);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

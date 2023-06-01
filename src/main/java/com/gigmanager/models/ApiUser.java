@@ -1,4 +1,5 @@
 package com.gigmanager.models;
+
 import javax.persistence.*;
 
 import lombok.Getter;

@@ -1,4 +1,5 @@
 package com.gigmanager.repositories;
+
 import com.gigmanager.models.ApiUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 

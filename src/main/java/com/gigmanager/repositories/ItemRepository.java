@@ -1,7 +1,6 @@
 package com.gigmanager.repositories;
 
 import com.gigmanager.models.Item;
-import com.gigmanager.models.Job;
 import com.gigmanager.models.enums.ItemStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 

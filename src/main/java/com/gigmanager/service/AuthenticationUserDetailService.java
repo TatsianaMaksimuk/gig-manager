@@ -17,10 +17,11 @@ public class AuthenticationUserDetailService implements UserDetailsService {
 
     //We're overriding loadUserByUsername() by using UserService we created earlier to read user by username:
 
-    @Override public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         ApiUser apiUser = userService.readUserByUsername(username);
 
-        if (apiUser == null){
+        if (apiUser == null) {
             throw new UsernameNotFoundException(username);
         }
 

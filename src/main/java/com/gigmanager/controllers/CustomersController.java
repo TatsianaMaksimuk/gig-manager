@@ -49,7 +49,7 @@ public class CustomersController {
 
     //update customer
     @PostMapping("/{id}")
-    public ResponseEntity<?> updateCustomer(@RequestBody CustomerUpsertRequest customerUpsertRequest, @PathVariable Long id,  HttpServletRequest request) {
+    public ResponseEntity<?> updateCustomer(@RequestBody CustomerUpsertRequest customerUpsertRequest, @PathVariable Long id, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
         Customer requestedCustomer = customerService.updateCustomer(customerUpsertRequest, id, username);
         if (requestedCustomer == null) {

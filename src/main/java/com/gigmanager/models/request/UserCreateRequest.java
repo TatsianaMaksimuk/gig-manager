@@ -6,9 +6,4 @@ import lombok.Data;
 public class UserCreateRequest {
     private String username;
     private String password;
-
-
-    //removed getters/setters because lombok started working
-
-
 }

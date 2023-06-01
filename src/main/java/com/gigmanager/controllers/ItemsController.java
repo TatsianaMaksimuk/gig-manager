@@ -65,13 +65,12 @@ public class ItemsController {
     }
 
 
-
     //update
     @PostMapping("jobs/{jobId}/items/{itemId}")
     public ResponseEntity<?> updateItem(@RequestBody ItemUpsertRequest itemUpsertRequest, Long jobId, Long itemId, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
-        Item updatedItem =  itemService.updateItem(itemUpsertRequest, jobId, itemId, username);
-        if (updatedItem == null){
+        Item updatedItem = itemService.updateItem(itemUpsertRequest, jobId, itemId, username);
+        if (updatedItem == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(updatedItem, HttpStatus.OK);

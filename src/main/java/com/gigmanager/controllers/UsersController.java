@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UsersController {
-     private final UserService userService;
+    private final UserService userService;
     //dependency injection
 
     @PostMapping
-    public ResponseEntity<?> createUser (@RequestBody UserCreateRequest userCreateRequest){
+    public ResponseEntity<?> createUser(@RequestBody UserCreateRequest userCreateRequest) {
         userService.createUser(userCreateRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }

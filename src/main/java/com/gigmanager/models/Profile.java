@@ -18,7 +18,7 @@ public class Profile {
     private Long id;
 
     @OneToOne()
-    @JoinColumn(name = "user_id", referencedColumnName="id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     @JsonIgnoreProperties("password")
     private ApiUser apiUser;
 
