@@ -31,12 +31,12 @@ public class JobService {
 
     //GetJobsByCustomerId
     public List<Job> findJobsByCustomerId(Long id, String username) {
-        return jobRepository.findAllByCustomer_ApiUser_usernameAndCustomer_id(id, username);
+        return jobRepository.findAllByCustomer_idAndCustomer_ApiUser_username(id, username);
     }
 
     //GetJobsByStatus
-    public List<Job> filerJobsByStatus(JobStatus status, String username) {
-        return jobRepository.findAllByCustomer_ApiUser_usernameAndStatus(status, username);
+    public List<Job> filterJobsByStatus(JobStatus status, String username) {
+        return jobRepository.findAllByStatusAndCustomer_ApiUser_username(status, username);
     }
 
     public Job createNewJob(JobUpsertRequest jobUpsertRequest, Long id, String username) {
@@ -49,6 +49,7 @@ public class JobService {
         newJob.setName(jobUpsertRequest.getName());
         newJob.setDescription(jobUpsertRequest.getDescription());
         newJob.setStatus(JobStatus.TO_DO);
+        jobRepository.save(newJob);
         return newJob;
     }
 

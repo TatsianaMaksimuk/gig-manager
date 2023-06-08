@@ -52,15 +52,16 @@ public class JobsController {
 
     //GetJobsByStatus
     @GetMapping("jobs/filter")
-    public ResponseEntity<?> getJobsByStatus(@RequestParam JobStatus status, HttpServletRequest request) {
+    public ResponseEntity<?> getJobsByStatus(@RequestParam String status, HttpServletRequest request) {
+        JobStatus jobStatus = JobStatus.valueOf(status);
         String username = request.getUserPrincipal().getName();
-        List<Job> jobs = jobService.filerJobsByStatus(status, username);
+        List<Job> jobs = jobService.filterJobsByStatus(jobStatus, username);
         return new ResponseEntity<>(jobs, HttpStatus.OK);
     }
 
     //CreateJob
     @PostMapping("customers/{id}/")
-    public ResponseEntity<?> createJob(@RequestBody JobUpsertRequest jobUpsertRequest, Long id, HttpServletRequest request) {
+    public ResponseEntity<?> createJob(@RequestBody JobUpsertRequest jobUpsertRequest, @PathVariable Long id, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
         Job newJob = jobService.createNewJob(jobUpsertRequest, id, username);
         return new ResponseEntity<>(newJob, HttpStatus.CREATED);
@@ -69,7 +70,7 @@ public class JobsController {
 
     //UpdateJob - don't set customer
     @PostMapping("customers/{customerId}/jobs/{jobId}")
-    public ResponseEntity<?> updateJob(@RequestBody JobUpsertRequest jobUpsertRequest, Long customerId, Long jobId, HttpServletRequest request) {
+    public ResponseEntity<?> updateJob(@RequestBody JobUpsertRequest jobUpsertRequest, @PathVariable Long customerId, @PathVariable Long jobId, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
         Job updatedJob = jobService.updateJob(jobUpsertRequest, customerId, jobId, username);
         if (updatedJob == null) {
