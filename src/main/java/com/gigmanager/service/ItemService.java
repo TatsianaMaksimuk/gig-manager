@@ -43,8 +43,10 @@ public class ItemService {
         newItem.setJob(job);
         newItem.setName(itemUpsertRequest.getName());
         newItem.setDescription(itemUpsertRequest.getDescription());
+        newItem.setType(itemUpsertRequest.getType());
         newItem.setStatus(ItemStatus.TO_DO);
         newItem.setStage(itemUpsertRequest.getStage());
+        itemRepository.save(newItem);
         return newItem;
     }
 
@@ -55,6 +57,7 @@ public class ItemService {
         }
         item.setName(itemUpsertRequest.getName());
         item.setDescription(itemUpsertRequest.getDescription());
+        item.setType(itemUpsertRequest.getType());
         item.setStatus(itemUpsertRequest.getStatus());
         item.setStage(itemUpsertRequest.getStage());
         item.setFinished(itemUpsertRequest.isFinished());

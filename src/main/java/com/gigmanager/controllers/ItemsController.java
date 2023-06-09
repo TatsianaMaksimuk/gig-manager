@@ -57,8 +57,8 @@ public class ItemsController {
 
 
     //create
-    @PostMapping("jobs/{id}")
-    public ResponseEntity<?> createItem(@RequestBody ItemUpsertRequest itemUpsertRequest, Long id, HttpServletRequest request) {
+    @PostMapping("jobs/{id}/")
+    public ResponseEntity<?> createItem(@RequestBody ItemUpsertRequest itemUpsertRequest, @PathVariable Long id, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
         Item newItem = itemService.createNewItem(itemUpsertRequest, id, username);
         return new ResponseEntity<>(newItem, HttpStatus.CREATED);
@@ -67,7 +67,7 @@ public class ItemsController {
 
     //update
     @PostMapping("jobs/{jobId}/items/{itemId}")
-    public ResponseEntity<?> updateItem(@RequestBody ItemUpsertRequest itemUpsertRequest, Long jobId, Long itemId, HttpServletRequest request) {
+    public ResponseEntity<?> updateItem(@RequestBody ItemUpsertRequest itemUpsertRequest, @PathVariable Long jobId, @PathVariable Long itemId, HttpServletRequest request) {
         String username = request.getUserPrincipal().getName();
         Item updatedItem = itemService.updateItem(itemUpsertRequest, jobId, itemId, username);
         if (updatedItem == null) {
